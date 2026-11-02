@@ -19,7 +19,7 @@ spec:
       - name: student-placement
         image: IMAGE_PLACEHOLDER
         ports:
-        - containerPort: 8080
+        - containerPort: 8000
         env:
         - name: SPRING_DATASOURCE_URL
           value: jdbc:mysql://mysql:3306/placementdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
@@ -33,13 +33,15 @@ spec:
             secretKeyRef:
               name: placement-db-secret
               key: password
+        - name: SERVER_PORT
+          value: "8000"
         readinessProbe:
           tcpSocket:
-            port: 8080
+            port: 8000
           initialDelaySeconds: 25
           periodSeconds: 10
         livenessProbe:
           tcpSocket:
-            port: 8080
+            port: 8000
           initialDelaySeconds: 40
           periodSeconds: 20

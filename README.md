@@ -72,7 +72,7 @@
 |                                                                                   |
 |  Local Docker Compose:                 Kubernetes Cluster (Minikube / Docker K8s):|
 |  - MySQL 8.4 (Port 3306)               - Namespace: `placement`                   |
-|  - Spring Boot App (Port 8080)         - MySQL Deployment + PVC + Secret          |
+|  - Spring Boot App (Port 8000)         - MySQL Deployment + PVC + Secret          |
 |                                        - App Deployment (2 Replicas)              |
 |                                        - NodePort Service (Port 30080)            |
 +-----------------------------------------------------------------------------------+
@@ -89,7 +89,7 @@ Make sure Docker Desktop is running on Windows, then run from the project root:
 # Start both MySQL and the Spring Boot application
 docker compose up --build
 ```
-- Open browser: `http://localhost:8080`
+- Open browser: `http://localhost:8000`
 - To stop the containers: `Ctrl + C` followed by:
 ```powershell
 docker compose down
@@ -117,7 +117,7 @@ $env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.12"
 ```
 
 3. **Access the portal:**
-Navigate to `http://localhost:8080` in your web browser. Sample jobs from Google, Microsoft, and Amazon are automatically seeded on first launch!
+Navigate to `http://localhost:8000` in your web browser. Sample jobs from Google, Microsoft, and Amazon are automatically seeded on first launch!
 
 ---
 
@@ -160,7 +160,7 @@ docker build -t student-placement:latest .
 
 # 2. Run container (requires MySQL running)
 docker run -d --name student-placement-app `
-  -p 8080:8080 `
+  -p 8000:8000 `
   -e SPRING_DATASOURCE_URL="jdbc:mysql://host.docker.internal:3306/placementdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC" `
   -e SPRING_DATASOURCE_USERNAME="placement" `
   -e SPRING_DATASOURCE_PASSWORD="placement123" `
@@ -213,7 +213,7 @@ The application includes complete production manifests under the [`k8s/`](./k8s)
 - `k8s/mysql-secret.example.yaml`: Database secret credentials.
 - `k8s/mysql.yaml`: PersistentVolumeClaim (1Gi), MySQL Deployment, and ClusterIP Service.
 - `k8s/app-deployment.yaml`: Spring Boot application deployment (2 replicas, liveness & readiness health probes).
-- `k8s/app-service.yaml`: NodePort Service mapping port `8080` to NodePort `30080`.
+- `k8s/app-service.yaml`: NodePort Service mapping port `8000` to NodePort `30080`.
 
 ### Local Deployment Steps (Minikube or Docker Desktop Kubernetes)
 1. **Enable Kubernetes** in Docker Desktop settings: **Settings → Kubernetes → Enable Kubernetes → Apply & Restart**.
@@ -263,10 +263,10 @@ Capture and include the following screenshots in your project documentation:
 
 | # | Screenshot Title | Where / How to Capture | Key Elements to Highlight |
 | :-: | :--- | :--- | :--- |
-| **1** | **Application Home Page** | Browser at `http://localhost:8080` | CampusConnect header, hero section, job listings (Google, Microsoft) |
-| **2** | **Add Job Posting Form** | Browser at `http://localhost:8080/jobs/new` | Job title, company, location, eligibility fields |
-| **3** | **Student Application Submission** | Browser at `http://localhost:8080` | Filling in Student Name and Email under a job card |
-| **4** | **Applications Dashboard** | Browser at `http://localhost:8080/applications` | Table displaying applicant name, role, company, and status dropdown |
+| **1** | **Application Home Page** | Browser at `http://localhost:8000` | CampusConnect header, hero section, job listings (Google, Microsoft) |
+| **2** | **Add Job Posting Form** | Browser at `http://localhost:8000/jobs/new` | Job title, company, location, eligibility fields |
+| **3** | **Student Application Submission** | Browser at `http://localhost:8000` | Filling in Student Name and Email under a job card |
+| **4** | **Applications Dashboard** | Browser at `http://localhost:8000/applications` | Table displaying applicant name, role, company, and status dropdown |
 | **5** | **GitHub Repository** | GitHub web interface | Commits history, repository structure, `Jenkinsfile` and `k8s/` |
 | **6** | **Maven Build & Test Success** | Terminal / PowerShell | `mvn test` output showing `12/12 Tests Run: 0 Failures: BUILD SUCCESS` |
 | **7** | **Jenkins Stage View** | Jenkins UI `http://localhost:9090/job/student-placement-pipeline/` | Green pipeline stages (Checkout, Compile & Test, Package, Docker Build) |
