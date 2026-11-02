@@ -4,3 +4,4 @@ target/
 *.iml
 .env
 .DS_Store
+k8s/*-secret.yaml

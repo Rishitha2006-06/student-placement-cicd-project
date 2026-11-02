@@ -18,6 +18,7 @@ spec:
       containers:
       - name: student-placement
         image: IMAGE_PLACEHOLDER
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         env:
