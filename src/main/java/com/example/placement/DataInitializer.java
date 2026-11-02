@@ -11,17 +11,31 @@ public class DataInitializer implements CommandLineRunner {
     private final JobRepository jobRepository;
     private final JobApplicationRepository applicationRepository;
     private final ActivityRepository activityRepository;
+    private final StudentProfileRepository profileRepository;
+    private final CompanyProfileRepository companyProfileRepository;
 
     public DataInitializer(JobRepository jobRepository,
                            JobApplicationRepository applicationRepository,
-                           ActivityRepository activityRepository) {
+                           ActivityRepository activityRepository,
+                           StudentProfileRepository profileRepository,
+                           CompanyProfileRepository companyProfileRepository) {
         this.jobRepository = jobRepository;
         this.applicationRepository = applicationRepository;
         this.activityRepository = activityRepository;
+        this.profileRepository = profileRepository;
+        this.companyProfileRepository = companyProfileRepository;
     }
 
     @Override
     public void run(String... args) {
+        if (profileRepository.count() == 0) {
+            profileRepository.save(new StudentProfile());
+        }
+
+        if (companyProfileRepository.count() == 0) {
+            companyProfileRepository.save(new CompanyProfile());
+        }
+
         if (jobRepository.count() == 0) {
             Job google = jobRepository.save(new Job(
                     "Software Engineer",

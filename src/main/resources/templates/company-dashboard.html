@@ -22,11 +22,11 @@
 
         <nav class="sidebar-nav">
             <a href="/company" class="sidebar-link active"><i class="bi bi-house-door-fill"></i> <span>Dashboard</span></a>
-            <a href="/jobs/new" class="sidebar-link"><i class="bi bi-plus-circle"></i> <span>Post Job</span></a>
-            <a href="/applications" class="sidebar-link"><i class="bi bi-people"></i> <span>View Applicants</span></a>
-            <a href="/applications" class="sidebar-link"><i class="bi bi-person-check"></i> <span>Shortlisted Candidates</span></a>
-            <a href="/" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>My Jobs</span></a>
-            <a href="#companyProfileModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-building"></i> <span>Company Profile</span></a>
+            <a href="/company/jobs/new" class="sidebar-link"><i class="bi bi-plus-circle"></i> <span>Post Job</span></a>
+            <a href="/company/applicants" class="sidebar-link"><i class="bi bi-people"></i> <span>View Applicants</span></a>
+            <a href="/company/shortlisted" class="sidebar-link"><i class="bi bi-person-check"></i> <span>Shortlisted Candidates</span></a>
+            <a href="/company/jobs" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>My Jobs</span></a>
+            <a href="/company/profile" class="sidebar-link"><i class="bi bi-building"></i> <span>Company Profile</span></a>
         </nav>
 
         <div class="sidebar-footer">
@@ -48,13 +48,45 @@
             </div>
 
             <div class="topbar-right">
-                <div class="notif-bell" title="Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="notif-dot"></span>
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="notif-bell" id="companyNotif" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span class="notif-dot"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-custom notif-dropdown shadow-lg" aria-labelledby="companyNotif">
+                        <div class="notif-header">
+                            <span class="fw-bold small">Company Alerts (2)</span>
+                            <span class="badge text-bg-info text-white" style="font-size:0.7rem;">Live</span>
+                        </div>
+                        <a href="/company/applicants" class="notif-item">
+                            <div class="stat-icon blue" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-person-plus-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">New Application: Ananya Sharma</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Applied for Software Engineer</div>
+                            </div>
+                        </a>
+                        <a href="/company/applicants" class="notif-item">
+                            <div class="stat-icon green" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-patch-check-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Interview Accepted</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Rishitha confirmed technical round</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <div class="user-profile-pill">
-                    <div class="user-avatar company-avatar">C</div>
-                    <span>TechCorp <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="user-profile-pill" id="companyDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                        <div class="user-avatar company-avatar">C</div>
+                        <span>TechCorp <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow-lg" aria-labelledby="companyDropdown">
+                        <li><a class="dropdown-item" href="/company/profile"><i class="bi bi-building"></i> Company Profile</a></li>
+                        <li><a class="dropdown-item" href="/company/jobs/new"><i class="bi bi-plus-circle"></i> Post New Job</a></li>
+                        <li><a class="dropdown-item" href="/company/applicants"><i class="bi bi-people"></i> Manage Applicants</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/"><i class="bi bi-box-arrow-right text-danger"></i> Sign Out</a></li>
+                    </ul>
                 </div>
             </div>
         </header>
@@ -138,7 +170,7 @@
                 <div class="panel-card">
                     <div class="panel-header">
                         <h3>Recent Applications</h3>
-                        <a href="/applications" class="view-all-link">View All <i class="bi bi-arrow-right"></i></a>
+                        <a href="/company/applicants" class="view-all-link">View All <i class="bi bi-arrow-right"></i></a>
                     </div>
                     <div class="d-flex flex-column gap-2">
                         <div class="job-item-row p-2 mb-2">
@@ -192,7 +224,7 @@
                         <rect x="69" y="12" width="12" height="28" rx="1"/>
                         <rect x="84" y="22" width="10" height="18" rx="1"/>
                     </svg>
-                    <a href="/jobs/new" class="cta-banner-btn">Post Job <i class="bi bi-arrow-right"></i></a>
+                    <a href="/company/jobs/new" class="cta-banner-btn">Post Job <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </main>

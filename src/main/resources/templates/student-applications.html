@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications - CampusConnect Placement Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="bi bi-mortarboard-fill text-white"></i></div>
+            <div>
+                <h2>Student Placement<br><span style="font-size:0.78rem; font-weight:500; color:#94a3b8;">Management System</span></h2>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="sidebar-link"><i class="bi bi-house-door"></i> <span>Dashboard</span></a>
+            <a href="/student/profile" class="sidebar-link"><i class="bi bi-person"></i> <span>My Profile</span></a>
+            <a href="/#jobs" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>Available Jobs</span></a>
+            <a href="/student/applications" class="sidebar-link active"><i class="bi bi-file-earmark-text-fill"></i> <span>My Applications</span></a>
+            <a href="/student/placement-status" class="sidebar-link"><i class="bi bi-bullseye"></i> <span>Placement Status</span></a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/" class="sidebar-link text-danger-emphasis"><i class="bi bi-box-arrow-left"></i> <span>Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+        <!-- Top Navigation Bar -->
+        <header class="app-topbar">
+            <div class="topbar-left">
+                <span class="brand-badge">CampusConnect</span>
+                <div class="role-switcher">
+                    <a href="/" class="role-btn active"><i class="bi bi-person-fill"></i> Student</a>
+                    <a href="/admin" class="role-btn"><i class="bi bi-shield-lock-fill"></i> Admin</a>
+                    <a href="/company" class="role-btn"><i class="bi bi-building"></i> Company</a>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="notif-bell" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell"></i>
+                        <span class="notif-dot"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-custom notif-dropdown shadow-lg" aria-labelledby="notifDropdown">
+                        <div class="notif-header">
+                            <span class="fw-bold small">Notifications (3)</span>
+                            <span class="badge text-bg-primary" style="font-size:0.7rem;">New</span>
+                        </div>
+                        <a href="/student/placement-status" class="notif-item">
+                            <div class="stat-icon green" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-trophy-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Selected at Google!</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">18 LPA • Offer letter available</div>
+                            </div>
+                        </a>
+                        <a href="/student/applications" class="notif-item">
+                            <div class="stat-icon blue" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-calendar-event"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Microsoft Interview Scheduled</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Round 2 on 20 Nov 2026</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="user-profile-pill" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-avatar" th:text="${profile != null ? profile.name.substring(0,2).toUpperCase() : 'RB'}">RB</div>
+                        <span><span th:text="${profile != null ? profile.name : 'Rishitha'}">Rishitha</span> <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow-lg" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="/student/profile"><i class="bi bi-person-circle"></i> My Profile</a></li>
+                        <li><a class="dropdown-item" href="/student/placement-status"><i class="bi bi-bullseye"></i> Placement Status</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/"><i class="bi bi-box-arrow-right text-danger"></i> Sign Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="dashboard-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h2 fw-bold mb-1">My Applications</h1>
+                    <p class="text-secondary mb-0">Track all job applications submitted under your profile</p>
+                </div>
+                <a href="/#jobs" class="btn btn-primary" style="background:#2563eb; border-radius:10px;"><i class="bi bi-search me-1"></i> Browse More Jobs</a>
+            </div>
+
+            <!-- Applications List -->
+            <div class="panel-card">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Company & Role</th>
+                                <th>Package</th>
+                                <th>Applied Date</th>
+                                <th>Stage / Interview</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="app : ${applications}">
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="company-logo-badge" style="width:40px; height:40px;">
+                                            <i class="bi bi-building text-primary" th:if="${!app.job.company.toLowerCase().contains('google') && !app.job.company.toLowerCase().contains('microsoft')}"></i>
+                                            <svg th:if="${app.job.company.toLowerCase().contains('google')}" width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+                                            <svg th:if="${app.job.company.toLowerCase().contains('microsoft')}" width="18" height="18" viewBox="0 0 23 23"><path fill="#f35325" d="M1 1h10v10H1z"/><path fill="#81bc06" d="M12 1h10v10H12z"/><path fill="#05a6f0" d="M1 12h10v10H1z"/><path fill="#ffba08" d="M12 12h10v10H12z"/></svg>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold" th:text="${app.job.title}">Software Engineer</div>
+                                            <div class="text-secondary small"><span th:text="${app.job.company}">Google</span> • <span th:text="${app.job.location}">Bengaluru</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-success" th:text="${app.packageOffered != null && !app.packageOffered.isBlank() ? app.packageOffered : (app.job.packageLpa != null ? app.job.packageLpa : '12 LPA')}">18 LPA</span>
+                                </td>
+                                <td>
+                                    <span class="small text-secondary" th:text="${app.appliedDateStr != null ? app.appliedDateStr : '10 Nov 2026'}">10 Nov 2026</span>
+                                </td>
+                                <td>
+                                    <span class="small text-secondary" th:text="${app.interviewDate != null ? app.interviewDate : 'Round Completed'}">20 Nov 2026</span>
+                                </td>
+                                <td>
+                                    <span class="badge-tag selected" th:if="${app.status == 'Selected'}"><i class="bi bi-check-circle-fill me-1"></i> Selected</span>
+                                    <span class="badge-tag shortlisted" th:if="${app.status == 'Shortlisted'}"><i class="bi bi-clock-history me-1"></i> Shortlisted</span>
+                                    <span class="badge-tag applied" th:if="${app.status == 'Applied'}"><i class="bi bi-send me-1"></i> In Review</span>
+                                    <span class="badge bg-danger text-white" th:if="${app.status == 'Rejected'}">Rejected</span>
+                                </td>
+                                <td class="text-end">
+                                    <a th:if="${app.status == 'Selected'}" href="/student/placement-status" class="btn btn-sm btn-success" style="border-radius:8px;">
+                                        <i class="bi bi-award-fill me-1"></i> View Offer
+                                    </a>
+                                    <span th:if="${app.status != 'Selected'}" class="text-secondary small">Under Evaluation</span>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${applications.isEmpty()}">
+                                <td colspan="6" class="text-center py-4 text-secondary">
+                                    You have not applied for any jobs yet. <a href="/#jobs">Explore Available Openings</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -22,12 +22,12 @@
 
         <nav class="sidebar-nav">
             <a href="/admin" class="sidebar-link active"><i class="bi bi-house-door-fill"></i> <span>Dashboard</span></a>
-            <a href="#studentModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-people"></i> <span>Manage Students</span></a>
-            <a href="#companyModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-buildings"></i> <span>Manage Companies</span></a>
-            <a href="/jobs/new" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>Manage Jobs</span></a>
-            <a href="/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>View Applications</span></a>
-            <a href="#reportModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-bar-chart"></i> <span>Reports</span></a>
-            <a href="#settingsModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-gear"></i> <span>Settings</span></a>
+            <a href="/admin/students" class="sidebar-link"><i class="bi bi-people"></i> <span>Manage Students</span></a>
+            <a href="/admin/companies" class="sidebar-link"><i class="bi bi-buildings"></i> <span>Manage Companies</span></a>
+            <a href="/admin/jobs" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>Manage Jobs</span></a>
+            <a href="/admin/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>View Applications</span></a>
+            <a href="/admin/reports" class="sidebar-link"><i class="bi bi-bar-chart"></i> <span>Reports</span></a>
+            <a href="/admin/settings" class="sidebar-link"><i class="bi bi-gear"></i> <span>Settings</span></a>
         </nav>
 
         <div class="sidebar-footer">
@@ -49,13 +49,44 @@
             </div>
 
             <div class="topbar-right">
-                <div class="notif-bell" title="Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="notif-dot"></span>
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="notif-bell" id="adminNotif" data-bs-toggle="dropdown" aria-expanded="false" title="System Alerts">
+                        <i class="bi bi-bell"></i>
+                        <span class="notif-dot"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-custom notif-dropdown shadow-lg" aria-labelledby="adminNotif">
+                        <div class="notif-header">
+                            <span class="fw-bold small">System Alerts (3)</span>
+                            <span class="badge text-bg-warning text-dark" style="font-size:0.7rem;">Live</span>
+                        </div>
+                        <a href="/admin/students" class="notif-item">
+                            <div class="stat-icon green" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-person-check-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Student Placed: Rishitha</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Selected at Google (18 LPA)</div>
+                            </div>
+                        </a>
+                        <a href="/admin/jobs" class="notif-item">
+                            <div class="stat-icon blue" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-briefcase-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">New Job Opening Posted</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Tech Mahindra • Associate Consultant</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <div class="user-profile-pill">
-                    <div class="user-avatar admin-avatar">A</div>
-                    <span>Admin <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="user-profile-pill" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                        <div class="user-avatar admin-avatar">A</div>
+                        <span>Admin <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow-lg" aria-labelledby="adminDropdown">
+                        <li><a class="dropdown-item" href="/admin/settings"><i class="bi bi-gear"></i> Portal Settings</a></li>
+                        <li><a class="dropdown-item" href="/admin/reports"><i class="bi bi-bar-chart"></i> View Reports</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/"><i class="bi bi-box-arrow-right text-danger"></i> Sign Out</a></li>
+                    </ul>
                 </div>
             </div>
         </header>

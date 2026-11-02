@@ -21,9 +21,9 @@
 
         <nav class="sidebar-nav">
             <a href="/" class="sidebar-link active"><i class="bi bi-house-door-fill"></i> <span>Dashboard</span></a>
-            <a href="#profileModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-person"></i> <span>My Profile</span></a>
+            <a href="/student/profile" class="sidebar-link"><i class="bi bi-person"></i> <span>My Profile</span></a>
             <a href="#jobs" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>Available Jobs</span></a>
-            <a href="/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>My Applications</span></a>
+            <a href="/student/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>My Applications</span></a>
             <a href="/student/placement-status" class="sidebar-link"><i class="bi bi-bullseye"></i> <span>Placement Status</span></a>
         </nav>
 
@@ -46,13 +46,55 @@
             </div>
 
             <div class="topbar-right">
-                <div class="notif-bell" title="Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="notif-dot"></span>
+                <!-- Notification Bell with Interactive Dropdown -->
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="notif-bell" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span class="notif-dot"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-custom notif-dropdown shadow-lg" aria-labelledby="notifDropdown">
+                        <div class="notif-header">
+                            <span class="fw-bold small">Notifications (3)</span>
+                            <span class="badge text-bg-primary" style="font-size:0.7rem;">New</span>
+                        </div>
+                        <a href="/student/placement-status" class="notif-item">
+                            <div class="stat-icon green" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-trophy-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Selected at Google!</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">18 LPA • Offer letter available</div>
+                            </div>
+                        </a>
+                        <a href="/student/applications" class="notif-item">
+                            <div class="stat-icon blue" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-calendar-event"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Microsoft Interview Scheduled</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Round 2 on 20 Nov 2026</div>
+                            </div>
+                        </a>
+                        <a href="/student/profile" class="notif-item">
+                            <div class="stat-icon orange" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-file-earmark-arrow-up-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Profile Strength: <span th:text="${profile != null ? profile.profileStrength + '%' : '85%'}">85%</span></div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Upload resume to reach 100%</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <div class="user-profile-pill">
-                    <div class="user-avatar">RB</div>
-                    <span>Rishitha <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+
+                <!-- User Profile Pill with Interactive Dropdown -->
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="user-profile-pill" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                        <div class="user-avatar" th:text="${profile != null && profile.name != null && profile.name.length() >= 2 ? profile.name.substring(0,2).toUpperCase() : 'RB'}">RB</div>
+                        <span><span th:text="${profile != null ? profile.name : 'Rishitha'}">Rishitha</span> <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow-lg" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="/student/profile"><i class="bi bi-person-circle"></i> My Profile</a></li>
+                        <li><a class="dropdown-item" href="/student/profile#edit"><i class="bi bi-pencil-square"></i> Edit Profile</a></li>
+                        <li><a class="dropdown-item" href="/student/profile#resume"><i class="bi bi-file-earmark-arrow-up"></i> Upload Resume</a></li>
+                        <li><a class="dropdown-item" href="/student/placement-status"><i class="bi bi-bullseye"></i> Placement Status</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/"><i class="bi bi-box-arrow-right text-danger"></i> Sign Out</a></li>
+                    </ul>
                 </div>
             </div>
         </header>
@@ -72,11 +114,10 @@
             <!-- Welcome Banner -->
             <div class="welcome-banner">
                 <div class="welcome-text">
-                    <h1>Welcome, Rishitha!</h1>
+                    <h1>Welcome, <span th:text="${profile != null ? profile.name : 'Rishitha'}">Rishitha</span>!</h1>
                     <p>Build your career, achieve your goals ✨</p>
                 </div>
                 <div class="banner-illustration d-none d-md-flex">
-                    <!-- High-quality SVG Illustration matching the screen -->
                     <svg width="180" height="95" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="160" cy="55" r="45" fill="#EEF2FF"/>
                         <path d="M125 90 C125 72, 140 60, 160 60 C180 60, 195 72, 195 90 Z" fill="#FDBA74"/>
@@ -109,7 +150,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon orange"><i class="bi bi-award-fill"></i></div>
-                    <div class="stat-number">85%</div>
+                    <div class="stat-number" th:text="${profile != null ? profile.profileStrength + '%' : '85%'}">85%</div>
                     <div class="stat-label">Profile Strength</div>
                 </div>
             </div>
@@ -128,26 +169,26 @@
                             <div class="job-info-left">
                                 <div class="company-logo-badge">
                                     <!-- Google Logo -->
-                                    <svg th:if="${job.company.toLowerCase().contains('google')}" width="24" height="24" viewBox="0 0 24 24">
+                                    <svg th:if="${job.company != null && job.company.toLowerCase().contains('google')}" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
                                         <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
                                         <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
                                         <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
                                     </svg>
                                     <!-- Microsoft Logo -->
-                                    <svg th:if="${job.company.toLowerCase().contains('microsoft')}" width="22" height="22" viewBox="0 0 23 23">
+                                    <svg th:if="${job.company != null && job.company.toLowerCase().contains('microsoft')}" width="22" height="22" viewBox="0 0 23 23">
                                         <path fill="#f35325" d="M1 1h10v10H1z"/>
                                         <path fill="#81bc06" d="M12 1h10v10H12z"/>
                                         <path fill="#05a6f0" d="M1 12h10v10H1z"/>
                                         <path fill="#ffba08" d="M12 12h10v10H12z"/>
                                     </svg>
                                     <!-- Amazon Logo -->
-                                    <svg th:if="${job.company.toLowerCase().contains('amazon')}" width="24" height="24" viewBox="0 0 24 24">
+                                    <svg th:if="${job.company != null && job.company.toLowerCase().contains('amazon')}" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="#FF9900" d="M13.92 14.5c-2.3 1.7-5.6 2.6-8.5 2.6-3.9 0-7.4-1.6-9.9-4.2-.2-.2 0-.5.2-.4 3.7 2.1 8.2 3.3 12.8 3.3 2.5 0 5.3-.5 7.9-1.6.4-.2.7.3.5.3z"/>
                                         <path fill="#232F3E" d="M13.8 11.2c-.1-.7-.7-1.3-1.4-1.3-.7 0-1.2.5-1.2 1.3 0 .7.5 1.2 1.2 1.2.7 0 1.3-.5 1.4-1.2z"/>
                                     </svg>
                                     <!-- Default Logo -->
-                                    <i th:if="${!job.company.toLowerCase().contains('google') && !job.company.toLowerCase().contains('microsoft') && !job.company.toLowerCase().contains('amazon')}" class="bi bi-building text-primary"></i>
+                                    <i th:if="${job.company == null || (!job.company.toLowerCase().contains('google') && !job.company.toLowerCase().contains('microsoft') && !job.company.toLowerCase().contains('amazon'))}" class="bi bi-building text-primary"></i>
                                 </div>
                                 <div class="job-titles">
                                     <h4 th:text="${job.title}">Software Engineer</h4>
@@ -156,33 +197,15 @@
                             </div>
                             <div class="job-action-right">
                                 <span class="badge-tag" th:classappend="${job.jobType == 'Internship' ? 'internship' : 'full-time'}" th:text="${job.jobType != null ? job.jobType : 'Full Time'}">Full Time</span>
-                                <button class="btn-apply-job" data-bs-toggle="modal" th:data-bs-target="'#applyModal-' + ${job.id}">Apply</button>
-                            </div>
-
-                            <!-- Apply Modal for each job -->
-                            <div class="modal fade" th:id="'applyModal-' + ${job.id}" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
-                                        <div class="modal-header border-0 pb-0">
-                                            <h5 class="modal-title fw-bold">Apply for <span th:text="${job.title}">Role</span></h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <form th:action="@{/jobs/{id}/apply(id=${job.id})}" method="post">
-                                            <div class="modal-body py-4">
-                                                <p class="text-secondary small mb-3">Company: <b th:text="${job.company}">Company</b> | Package: <b th:text="${job.packageLpa}">12 LPA</b></p>
-                                                <label class="form-label small fw-bold">Full Name</label>
-                                                <input class="form-control mb-3" name="studentName" value="Rishitha" required style="border-radius: 10px;">
-                                                <label class="form-label small fw-bold">College Email</label>
-                                                <input class="form-control mb-3" name="email" type="email" value="rishitha@example.com" required style="border-radius: 10px;">
-                                                <p class="small text-muted mb-0"><i class="bi bi-info-circle me-1"></i> Eligibility: <span th:text="${job.eligibility}">Criteria</span></p>
-                                            </div>
-                                            <div class="modal-footer border-0 pt-0">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary" style="background:#2563eb; border-radius:10px; padding:8px 24px;">Submit Application</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                <button type="button" class="btn-apply-job"
+                                        onclick="openApplyModal(this)"
+                                        th:data-job-id="${job.id}"
+                                        th:data-job-title="${job.title}"
+                                        th:data-job-company="${job.company}"
+                                        th:data-job-package="${job.packageLpa != null ? job.packageLpa : '12 LPA'}"
+                                        th:data-job-eligibility="${job.eligibility != null ? job.eligibility : 'Criteria'}">
+                                    Apply
+                                </button>
                             </div>
                         </div>
 
@@ -216,33 +239,100 @@
         </main>
     </div>
 
-    <!-- Student Profile Modal -->
-    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+    <!-- Global Dynamic Apply Modal (Outside transformed elements for 100% reliable popup) -->
+    <div class="modal fade" id="applyModal" tabindex="-1" aria-hidden="true" style="z-index: 10000;">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.18);">
                 <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Student Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0">Apply for <span id="modalJobTitle" class="text-primary">Role</span></h5>
+                        <p class="text-secondary small mb-0"><span id="modalJobCompany">Company</span> • Package: <span id="modalJobPackage" class="text-success fw-bold">12 LPA</span></p>
+                    </div>
+                    <button type="button" class="btn-close" onclick="closeApplyModal()" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body py-4">
-                    <div class="d-flex align-items-center gap-3 mb-4">
-                        <div class="user-avatar" style="width: 54px; height: 54px; font-size: 1.2rem;">RB</div>
-                        <div>
-                            <h5 class="mb-0 fw-bold">Rishitha</h5>
-                            <p class="text-secondary small mb-0">B.Tech Computer Science & Engineering</p>
+                <form id="applyJobForm" method="post" action="">
+                    <div class="modal-body py-3">
+                        <div class="alert alert-light border small mb-3">
+                            <i class="bi bi-info-circle text-primary me-1"></i> <b>Eligibility:</b> <span id="modalJobEligibility">Criteria</span>
+                        </div>
+                        <label class="form-label small fw-bold">Full Name</label>
+                        <input class="form-control mb-3" name="studentName" th:value="${profile != null ? profile.name : 'Rishitha'}" required style="border-radius: 10px;">
+                        <label class="form-label small fw-bold">College Email</label>
+                        <input class="form-control mb-3" name="email" type="email" th:value="${profile != null ? profile.email : 'rishitha@example.com'}" required style="border-radius: 10px;">
+                        
+                        <div class="p-3 rounded-3" style="background:#f8fafc; border:1px dashed #cbd5e1;">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-file-earmark-pdf-fill text-danger fs-3"></i>
+                                    <div>
+                                        <div class="fw-bold small" th:text="${profile != null ? profile.resumeFileName : 'Rishitha_Resume_CSE.pdf'}">Rishitha_Resume_CSE.pdf</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Verified Resume from Profile</div>
+                                    </div>
+                                </div>
+                                <a href="/student/profile" class="btn btn-sm btn-outline-primary" style="border-radius:8px; font-size:0.75rem;">Edit / Upload</a>
+                            </div>
                         </div>
                     </div>
-                    <table class="table table-borderless small">
-                        <tr><td class="text-secondary">CGPA:</td><td><b>8.5 / 10.0</b></td></tr>
-                        <tr><td class="text-secondary">Batch:</td><td><b>2022 - 2026</b></td></tr>
-                        <tr><td class="text-secondary">Email:</td><td><b>rishitha@example.com</b></td></tr>
-                        <tr><td class="text-secondary">Profile Strength:</td><td><span class="badge text-bg-warning">85% Complete</span></td></tr>
-                    </table>
-                </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-light" onclick="closeApplyModal()" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="background:#2563eb; border-radius:10px; padding:8px 24px;">Submit Application</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Foolproof Apply Modal handler (Bootstrap + Pure DOM fallback)
+        function openApplyModal(btn) {
+            const jobId = btn.getAttribute('data-job-id');
+            const jobTitle = btn.getAttribute('data-job-title');
+            const jobCompany = btn.getAttribute('data-job-company');
+            const jobPackage = btn.getAttribute('data-job-package');
+            const jobEligibility = btn.getAttribute('data-job-eligibility');
+
+            document.getElementById('modalJobTitle').textContent = jobTitle;
+            document.getElementById('modalJobCompany').textContent = jobCompany;
+            document.getElementById('modalJobPackage').textContent = jobPackage;
+            document.getElementById('modalJobEligibility').textContent = jobEligibility || 'Eligible';
+            document.getElementById('applyJobForm').action = '/jobs/' + jobId + '/apply';
+
+            const modalEl = document.getElementById('applyModal');
+            if (window.bootstrap && bootstrap.Modal) {
+                bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            } else {
+                modalEl.classList.add('show');
+                modalEl.style.display = 'block';
+                modalEl.style.backgroundColor = 'rgba(0,0,0,0.5)';
+            }
+        }
+
+        function closeApplyModal() {
+            const modalEl = document.getElementById('applyModal');
+            if (window.bootstrap && bootstrap.Modal) {
+                const inst = bootstrap.Modal.getInstance(modalEl);
+                if (inst) inst.hide();
+            }
+            modalEl.classList.remove('show');
+            modalEl.style.display = 'none';
+        }
+
+        // Dropdown toggle fallback
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+            dropdownToggles.forEach(function(toggle) {
+                toggle.addEventListener('click', function(e) {
+                    if (!window.bootstrap) {
+                        e.preventDefault();
+                        const menu = this.nextElementSibling;
+                        if (menu) {
+                            menu.classList.toggle('show');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -21,9 +21,9 @@
 
         <nav class="sidebar-nav">
             <a href="/" class="sidebar-link"><i class="bi bi-house-door"></i> <span>Dashboard</span></a>
-            <a href="/#profileModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-person"></i> <span>My Profile</span></a>
+            <a href="/student/profile" class="sidebar-link"><i class="bi bi-person"></i> <span>My Profile</span></a>
             <a href="/#jobs" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>Available Jobs</span></a>
-            <a href="/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>My Applications</span></a>
+            <a href="/student/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>My Applications</span></a>
             <a href="/student/placement-status" class="sidebar-link active"><i class="bi bi-bullseye"></i> <span>Placement Status</span></a>
         </nav>
 
@@ -46,13 +46,45 @@
             </div>
 
             <div class="topbar-right">
-                <div class="notif-bell" title="Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span class="notif-dot"></span>
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="notif-bell" id="statusNotif" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span class="notif-dot"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-custom notif-dropdown shadow-lg" aria-labelledby="statusNotif">
+                        <div class="notif-header">
+                            <span class="fw-bold small">Notifications (3)</span>
+                            <span class="badge text-bg-primary" style="font-size:0.7rem;">New</span>
+                        </div>
+                        <a href="/student/placement-status" class="notif-item">
+                            <div class="stat-icon green" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-trophy-fill"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Selected at Google!</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">18 LPA • Offer letter available</div>
+                            </div>
+                        </a>
+                        <a href="/student/applications" class="notif-item">
+                            <div class="stat-icon blue" style="width:32px; height:32px; font-size:0.9rem; margin-bottom:0;"><i class="bi bi-calendar-event"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.82rem;">Microsoft Interview Scheduled</div>
+                                <div class="text-secondary" style="font-size:0.75rem;">Round 2 on 20 Nov 2026</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <div class="user-profile-pill">
-                    <div class="user-avatar">RB</div>
-                    <span>Rishitha <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+
+                <div class="dropdown">
+                    <a href="javascript:void(0)" class="user-profile-pill" id="statusProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                        <div class="user-avatar" th:text="${profile != null ? profile.name.substring(0,2).toUpperCase() : 'RB'}">RB</div>
+                        <span><span th:text="${profile != null ? profile.name : 'Rishitha'}">Rishitha</span> <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow-lg" aria-labelledby="statusProfileDropdown">
+                        <li><a class="dropdown-item" href="/student/profile"><i class="bi bi-person-circle"></i> My Profile</a></li>
+                        <li><a class="dropdown-item" href="/student/profile#resume"><i class="bi bi-file-earmark-arrow-up"></i> Upload Resume</a></li>
+                        <li><a class="dropdown-item" href="/student/placement-status"><i class="bi bi-bullseye"></i> Placement Status</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/"><i class="bi bi-box-arrow-right text-danger"></i> Sign Out</a></li>
+                    </ul>
                 </div>
             </div>
         </header>
