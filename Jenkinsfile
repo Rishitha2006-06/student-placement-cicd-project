@@ -1,11 +1,10 @@
 pipeline {
     agent any
 
-    // Tool configuration: Configure these names under Jenkins -> Manage Jenkins -> Tools
-    // If tools are already in system PATH, you can comment this block out.
+    // Tool configuration: Configured in Jenkins (Manage Jenkins -> Tools)
     tools {
-        jdk 'jdk21'
-        maven 'maven3'
+        jdk 'JDK21'
+        maven 'Maven3'
     }
 
     environment {
