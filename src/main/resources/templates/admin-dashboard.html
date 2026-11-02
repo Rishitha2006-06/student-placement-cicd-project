@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CampusConnect Placement Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="bi bi-mortarboard-fill text-white"></i></div>
+            <div>
+                <h2>Student Placement<br><span style="font-size:0.78rem; font-weight:500; color:#94a3b8;">Management System</span></h2>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/admin" class="sidebar-link active"><i class="bi bi-house-door-fill"></i> <span>Dashboard</span></a>
+            <a href="#studentModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-people"></i> <span>Manage Students</span></a>
+            <a href="#companyModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-buildings"></i> <span>Manage Companies</span></a>
+            <a href="/jobs/new" class="sidebar-link"><i class="bi bi-briefcase"></i> <span>Manage Jobs</span></a>
+            <a href="/applications" class="sidebar-link"><i class="bi bi-file-earmark-text"></i> <span>View Applications</span></a>
+            <a href="#reportModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-bar-chart"></i> <span>Reports</span></a>
+            <a href="#settingsModal" data-bs-toggle="modal" class="sidebar-link"><i class="bi bi-gear"></i> <span>Settings</span></a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/" class="sidebar-link text-danger-emphasis"><i class="bi bi-box-arrow-left"></i> <span>Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+        <!-- Top Navigation Bar -->
+        <header class="app-topbar">
+            <div class="topbar-left">
+                <span class="brand-badge">CampusConnect</span>
+                <div class="role-switcher">
+                    <a href="/" class="role-btn"><i class="bi bi-person-fill"></i> Student</a>
+                    <a href="/admin" class="role-btn active"><i class="bi bi-shield-lock-fill"></i> Admin</a>
+                    <a href="/company" class="role-btn"><i class="bi bi-building"></i> Company</a>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="notif-bell" title="Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="notif-dot"></span>
+                </div>
+                <div class="user-profile-pill">
+                    <div class="user-avatar admin-avatar">A</div>
+                    <span>Admin <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard-content">
+            <!-- Header greeting -->
+            <div class="mb-4">
+                <h1 class="h2 fw-bold mb-1">Hello, Admin!</h1>
+                <p class="text-secondary">Here's an overview of the placement system.</p>
+            </div>
+
+            <!-- 4 Metric Cards -->
+            <div class="stat-cards-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="bi bi-people-fill"></i></div>
+                    <div class="stat-number" th:text="${totalStudents}">250</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="bi bi-building-fill"></i></div>
+                    <div class="stat-number" th:text="${registeredCompanies}">45</div>
+                    <div class="stat-label">Registered Companies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="bi bi-briefcase-fill"></i></div>
+                    <div class="stat-number" th:text="${totalJobs}">120</div>
+                    <div class="stat-label">Total Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="bi bi-patch-check-fill"></i></div>
+                    <div class="stat-number" th:text="${placedStudents}">180</div>
+                    <div class="stat-label">Placed Students</div>
+                </div>
+            </div>
+
+            <!-- Two Column Row: Placement Statistics Line Chart & Recent Activities -->
+            <div class="two-column-grid">
+                <!-- Left: Line Chart -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h3>Placement Statistics</h3>
+                        <div class="d-flex align-items-center gap-3 small fw-bold">
+                            <span style="color:#2563eb;"><i class="bi bi-circle-fill me-1" style="font-size:8px;"></i> Placed</span>
+                            <span style="color:#7c3aed;"><i class="bi bi-circle-fill me-1" style="font-size:8px;"></i> Applied</span>
+                        </div>
+                    </div>
+                    <div style="height: 250px;">
+                        <canvas id="placementStatsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Right: Recent Activities -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h3>Recent Activities</h3>
+                        <a href="/applications" class="view-all-link">View All <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                    <div class="activity-feed d-flex flex-column gap-3">
+                        <div th:each="act : ${activities}" class="d-flex align-items-start gap-3 p-2 rounded-3" style="background:#f8fafc;">
+                            <div class="p-2 rounded-3 text-primary bg-white shadow-sm">
+                                <i class="bi bi-briefcase-fill" th:if="${act.category == 'job'}"></i>
+                                <i class="bi bi-building" th:if="${act.category == 'company'}"></i>
+                                <i class="bi bi-person-check-fill text-success" th:if="${act.category == 'placed'}"></i>
+                                <i class="bi bi-file-earmark-text text-warning" th:if="${act.category == 'application'}"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold small" th:text="${act.title}">Activity Title</div>
+                                <div class="text-secondary" style="font-size:0.78rem;" th:text="${act.subtitle}">Subtitle</div>
+                            </div>
+                        </div>
+
+                        <!-- Fallback static items if activities is empty -->
+                        <div th:if="${activities == null || activities.isEmpty()}" class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-start gap-3 p-2 rounded-3" style="background:#f8fafc;">
+                                <div class="p-2 rounded-3 bg-white shadow-sm text-primary"><i class="bi bi-building"></i></div>
+                                <div><div class="fw-bold small">New company registered</div><div class="text-secondary" style="font-size:0.78rem;">Tech Mahindra • 2 mins ago</div></div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3 p-2 rounded-3" style="background:#f8fafc;">
+                                <div class="p-2 rounded-3 bg-white shadow-sm text-info"><i class="bi bi-briefcase-fill"></i></div>
+                                <div><div class="fw-bold small">New job posted</div><div class="text-secondary" style="font-size:0.78rem;">SDE - Accenture • 5 mins ago</div></div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3 p-2 rounded-3" style="background:#f8fafc;">
+                                <div class="p-2 rounded-3 bg-white shadow-sm text-success"><i class="bi bi-person-check-fill"></i></div>
+                                <div><div class="fw-bold small">Student placed</div><div class="text-secondary" style="font-size:0.78rem;">Sneha Reddy • 10 mins ago</div></div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3 p-2 rounded-3" style="background:#f8fafc;">
+                                <div class="p-2 rounded-3 bg-white shadow-sm text-warning"><i class="bi bi-file-earmark-text"></i></div>
+                                <div><div class="fw-bold small">New application received</div><div class="text-secondary" style="font-size:0.78rem;">Rahul Kumar • 12 mins ago</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Bar at bottom -->
+            <div class="quick-actions-bar">
+                <a href="#studentModal" data-bs-toggle="modal" class="quick-action-btn blue"><i class="bi bi-person-plus-fill"></i> Add Student</a>
+                <a href="#companyModal" data-bs-toggle="modal" class="quick-action-btn green"><i class="bi bi-building-add"></i> Add Company</a>
+                <a href="/jobs/new" class="quick-action-btn orange"><i class="bi bi-plus-circle-fill"></i> Post Job</a>
+                <a href="/applications" class="quick-action-btn purple"><i class="bi bi-file-earmark-bar-graph-fill"></i> View Reports</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="studentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:20px; border:none;">
+                <div class="modal-header border-0 pb-0"><h5 class="modal-title fw-bold">Register Student</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body py-4">
+                    <label class="form-label small fw-bold">Student Name</label>
+                    <input class="form-control mb-3" placeholder="e.g. Sneha Reddy" style="border-radius:10px;">
+                    <label class="form-label small fw-bold">Department / Branch</label>
+                    <input class="form-control mb-3" placeholder="CSE / IT / ECE" style="border-radius:10px;">
+                    <label class="form-label small fw-bold">CGPA</label>
+                    <input class="form-control" placeholder="8.5" style="border-radius:10px;">
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button class="btn btn-primary" data-bs-dismiss="modal" style="background:#2563eb; border-radius:10px;">Save Student</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Company Modal -->
+    <div class="modal fade" id="companyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:20px; border:none;">
+                <div class="modal-header border-0 pb-0"><h5 class="modal-title fw-bold">Register Company</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body py-4">
+                    <label class="form-label small fw-bold">Company Name</label>
+                    <input class="form-control mb-3" placeholder="e.g. Oracle" style="border-radius:10px;">
+                    <label class="form-label small fw-bold">HQ Location</label>
+                    <input class="form-control mb-3" placeholder="Bengaluru / Hyderabad" style="border-radius:10px;">
+                    <label class="form-label small fw-bold">Industry Sector</label>
+                    <input class="form-control" placeholder="Information Technology" style="border-radius:10px;">
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button class="btn btn-primary" data-bs-dismiss="modal" style="background:#2563eb; border-radius:10px;">Save Company</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Interactive Chart for Placement Statistics (Line Chart matching screen)
+        const ctx = document.getElementById('placementStatsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027'],
+                datasets: [
+                    {
+                        label: 'Placed',
+                        data: [100, 150, 168, 180],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.35,
+                        fill: false,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#2563eb'
+                    },
+                    {
+                        label: 'Applied',
+                        data: [50, 95, 110, 130],
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        tension: 0.35,
+                        fill: false,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#7c3aed'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 200,
+                        ticks: { stepSize: 50 },
+                        grid: { color: '#f1f5f9' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
